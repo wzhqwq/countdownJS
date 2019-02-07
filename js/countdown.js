@@ -1,14 +1,12 @@
 (function () {
 	var model = document.createElement("div");
 	model.className = "ctdn_meta";
-	model.innerHTML = '<div class="ctdn_back"><div></div><div><div></div></div></div><div class="ctdn_flip"><div></div><div><div></div></div></div>';
+	model.innerHTML = '<div class="ctdn_back"><div><div></div></div><div><div></div></div></div><div class="ctdn_flip"><div><div></div></div><div><div></div></div></div>';
 	function newMeta(value) {
 		var val_now = value = String(value),
 			ret = model.cloneNode(true),
-			back_meta = $(ret).children(".ctdn_back").children(),
-			flip_meta = $(ret).children(".ctdn_flip").children();
-		back_meta[1] = back_meta[1].children[0];
-		flip_meta[1] = flip_meta[1].children[0];
+			back_meta = $(ret).children(".ctdn_back").children().children(),
+			flip_meta = $(ret).children(".ctdn_flip").children().children();
 		Object.defineProperty(ret, "innerValue", {
 			set: function (value) {
 				value = String(value);
