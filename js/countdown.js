@@ -1,4 +1,62 @@
 (function () {
+	if (typeof $ == "undefined") {
+		console.error("Unable to start CountdownJS: CountdownJS requires jQuery library.");
+		return;
+	}
+	function addP(o, name, getter) {
+		Object.defineProperty(o, name, {
+			get: getter
+		});
+	}
+	var cds = [];
+	var types = [];
+	var baseMember = {};
+	addP(baseMember, "pause", function () {
+		if (this.isPause || this.isFrozen) return;
+		this.onPause = true;
+		if (this.typeLis[3])
+			setTimeout(() => {
+				this.typeLis[3].call(this);
+			}, 0);
+	});
+	addP(baseMember, "freeze", function () {
+		if (this.isPause || this.isFrozen) return;
+		this.onFrozen = true;
+		if (this.typeLis[4])
+			setTimeout(() => {
+				this.typeLis[4].call(this);
+			}, 0);
+	});
+	addP(baseMember, "resume", function () {
+		if (this.isPause || this.isFrozen) {
+			this.onPause = this.isFrozen = false;
+			if (this.typeLis[5])
+				setTimeout(() => {
+					this.typeLis[5].call(this);
+				}, 0);
+		}
+	});
+
+	addP($.fn, "cdjs", function () {
+		return (type, time, configuration) => {
+			if (types[type] == undefined) return false;
+			var current = (typeof this.cdjsid == "number") ?
+				cds[this.cdjsid] : null;
+	
+			if (current != null) {
+				if (current.typeLis[1])
+					current.typeLis[1].call(current);
+				if (current.DOM.parentNode == this) this.removeChild(current.DOM);
+				delete cds[this.cdjsid];
+			}
+			if (this == null) return false;
+			var newCd = {};
+			Object.defineProperty(newCd, "DOM", {
+				writable: false,
+				value: types[type].ctor(time, configuration || {})
+			});
+		};
+	});
 	var model = document.createElement("div");
 	model.className = "ctdn_meta";
 	model.innerHTML = '<div class="ctdn_back"><div><div></div></div><div><div></div></div></div><div class="ctdn_flip"><div><div></div></div><div><div></div></div></div>';
