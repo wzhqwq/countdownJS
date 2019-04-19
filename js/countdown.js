@@ -10,32 +10,11 @@
 	}
 	var cds = [];
 	var types = [];
-	var baseMember = {};
-	addP(baseMember, "pause", function () {
-		if (this.isPause || this.isFrozen) return;
-		this.onPause = true;
-		if (this.typeLis[3])
-			setTimeout(() => {
-				this.typeLis[3].call(this);
-			}, 0);
-	});
-	addP(baseMember, "freeze", function () {
-		if (this.isPause || this.isFrozen) return;
-		this.onFrozen = true;
-		if (this.typeLis[4])
-			setTimeout(() => {
-				this.typeLis[4].call(this);
-			}, 0);
-	});
-	addP(baseMember, "resume", function () {
-		if (this.isPause || this.isFrozen) {
-			this.onPause = this.isFrozen = false;
-			if (this.typeLis[5])
-				setTimeout(() => {
-					this.typeLis[5].call(this);
-				}, 0);
-		}
-	});
+	/* eventList: [0]"enterSecond" [1]"enterMinite" [2]"enterHour" [3]"enterDay"
+	[4]"finish"
+	typeList: [0]"constructor" [1]"destructor" [2]"onPause" [3]"onFreeze" [4]"onResume"
+	[5]"onUpdate"
+	*/
 
 	addP($.fn, "cdjs", function () {
 		return (type, time, configuration) => {
@@ -50,7 +29,28 @@
 				delete cds[this.cdjsid];
 			}
 			if (this == null) return false;
-			var newCd = {};
+			var newCd = {}, shared = {};
+			var isPaused = false, isFrozen = false, day, hour, minite, second, seconds = time;
+			var timeout;
+			function nextSecond()
+			addP(shared, "")
+			addP(shared, "pause", function () {
+				if (isPaused || isFrozen) return;
+				onPause = true;
+				clearTimeout(timeout);
+				typeLis[2].call(this);
+			});
+			addP(shared, "freeze", function () {
+				if (isPaused || isFrozen) return;
+				onFrozen = true;
+				typeLis[3].call(this);
+			});
+			addP(shared, "resume", function () {
+				if (isPaused || isFrozen) {
+					onPause = isFrozen = false;
+					typeLis[4].call(this);
+				}
+			});
 			Object.defineProperty(newCd, "DOM", {
 				writable: false,
 				value: types[type].ctor(time, configuration || {})
