@@ -1,11 +1,12 @@
-.ctdn {
+.scbd {
 	--rev-color: white;
+	transition: opacity .2s;
 }
-.ctdn span {
+.scbd span {
 	font-size: 14px;
 	margin-left: 2px;
 }
-.ctdn_meta {
+.scbd_meta {
 	width: 1.236em;
 	height: 2em;
 	line-height: 2em;
@@ -13,32 +14,32 @@
 	display: inline-block;
 	margin-left: 5px;
 }
-.ctdn_back, .ctdn_flip {
+.scbd_back, .scbd_flip {
 	width: inherit;
 	height: inherit;
 	position: absolute;
 }
-.ctdn_back>div, .ctdn_flip>div {
+.scbd_back>div, .scbd_flip>div {
 	width: 100%;
 	height: 1em;
 	overflow: hidden;
 	background-color: currentColor;
 }
-.ctdn_back>div>div, .ctdn_flip>div>div {
+.scbd_back>div>div, .scbd_flip>div>div {
 	color: var(--rev-color);
 	text-align: center;
 }
-.ctdn_back {
+.scbd_back {
 	border-radius: .25em;
 	overflow: hidden;
 }
-.ctdn_flip>div:first-child {
+.scbd_flip>div:first-child {
 	border-top-left-radius: .25em;
 	border-top-right-radius: .25em;
 	transform-origin: 50% 100%;
 	border-bottom: none;
 }
-.ctdn_flip>div:last-child {
+.scbd_flip>div:last-child {
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 	transform-origin: 50% 0;
@@ -62,6 +63,6 @@
 	animation: meta_flip_2 .4s linear 1;
 }
 
-.ctdn_back>div:last-child>div, .ctdn_flip>div:last-child>div {
+.scbd_back>div:last-child>div, .scbd_flip>div:last-child>div {
 	margin-top: -1em;
 }
