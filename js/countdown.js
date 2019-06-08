@@ -46,6 +46,7 @@
 			var listeners = {enterSecond: [], enterMinite: [], enterHour: [], enterDay: [],
 				destroy: [], pause: [], resume: [], freeze: [], wakeup: [], finish: [], update: []},
 				timeoutId, autopause = 2, lastTime = Date.now(), offset = 0;
+			var stubborns = new Object(listeners);
 			op.paused = false; op.frozen = false; op.finished = false;
 			op.day = day; op.hour = hour; op.minite = minite; op.second = second; op.seconds = seconds;
 
@@ -66,6 +67,7 @@
 				timeoutId = setTimeout(nextSecond, 1000 + offset);
 
 				if (!frozen) for (var i = 0, o = listeners.enterSecond, l = o.length; i < l; i++) defer(o[i]);
+				for (var i = 0, o = stubborns.enterSecond, l = o.length; i < l; i++) defer(o[i]);
 				op.seconds = --seconds;
 				if (seconds <= 0) {
 					op.second = second = 0;
@@ -78,6 +80,7 @@
 				if (second < 0) {
 					second = 59;
 					if (!frozen) for (var i = 0, o = listeners.enterMinite, l = o.length; i < l; i++) defer(o[i]);
+					for (var i = 0, o = stubborns.enterMinite, l = o.length; i < l; i++) defer(o[i]);
 					minite--;
 					if (minite < 0) {
 						minite = 59;
@@ -86,6 +89,7 @@
 						if (hour < 0) {
 							hour = 23;
 							if (!frozen) for (var i = 0, o = listeners.enterDay, l = o.length; i < l; i++) defer(o[i]);
+							for (var i = 0, o = stubborns.enterDay, l = o.length; i < l; i++) defer(o[i]);
 							op.day = --day;
 						}
 						op.hour = hour;
@@ -127,7 +131,7 @@
 			addC(op, "update", function () {});
 			addC(op, "destroy", function () {});
 			addC(op, "autoPause", function () {});
-			addC(op, "addEventListener", function (type, listener) {
+			addC(op, "addEventListener", function (type, listener, visible) {
 				if (typeof type != "string" || type == "" || listener == null) return 0;
 				if (!(listeners.hasOwnProperty(type))) return false;
 				listeners[type].push(listener);
